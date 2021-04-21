@@ -1,0 +1,7 @@
+{
+  "name": "TCP Syn Scan",
+  "description": "Description",
+  "version":1.0,
+  "author": "Martin Rader",
+  "module": "tcp_syn_scan.py"
+}

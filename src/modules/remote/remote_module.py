@@ -1,4 +1,5 @@
 from ..base_module import BaseModule
+from rmoptions.mapper import IntMapper
 
 
 class RemoteModule(BaseModule):
@@ -11,9 +12,11 @@ class RemoteModule(BaseModule):
                                                               default_value=None)
         self.option_rports = self.option_handler.create_option("rports", "target ports",
                                                                multiple_values=True,
-                                                               default_value=[])
+                                                               default_value=[],
+                                                               mapper=IntMapper)
         self.option_lport = self.option_handler.create_option("lport", "attacker port",
-                                                              default_value=None)
+                                                              default_value=None,
+                                                              mapper=IntMapper)
 
 
     '''

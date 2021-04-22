@@ -3,9 +3,17 @@ from rmoptions import RMOptionHandler
 import os
 import json
 import importlib
+from src.core.commands.module_command import ModuleCommand
+from src.core.commands.create_command import CreateCommand
 
 option_handler = RMOptionHandler()
-option_create = option_handler.create_option("create", "create a resource", short_name="c", required=False, needs_value=True)
+option_create = option_handler.create_option("create", "create a resource",
+                                             short_name="c", required=False,
+                                             quit_after_this_option=True)
+
+option_module = option_handler.create_option("module", "choose a module",
+                                             short_name="m", required=False,
+                                             quit_after_this_option=True)
 
 if not option_handler.check():
     option_handler.print_error()
@@ -15,28 +23,18 @@ if not option_handler.check():
 root_path = os.path.dirname(os.path.realpath(__file__))+"/"
 module_path = "src/modules/"
 
+if option_handler.activated_main_option:
+    if option_handler.activated_main_option == option_module:
+        module_command = ModuleCommand()
+        module_command.handle_option(option_module)
+    elif option_handler.activated_main_option == option_create:
+        create_command = CreateCommand()
+        create_command.handle_option(option_create)
+
+    exit()
+
+
 def main():
-    if option_create.in_use:
-        create_path = root_path+module_path+"others/create/"
-        found = False
-        for m in os.listdir(create_path):
-            current_path = create_path+m
-            if os.path.isdir(current_path) and "rm_module.json" in os.listdir(current_path):
-                with open(current_path+"/rm_module.json", "r") as file:
-                    data = json.load(file)
-                    if data["short-name"] == option_create.value:
-                        found = True
-                        import_path = current_path.replace(root_path, "").replace("/", ".")+"."+data["module"].replace(".py", "")
-                        current_module = importlib.import_module(import_path).get_module()
-                        current_module.init_module()
-                        current_module.show_usage()
-                        current_module.run_module()
-
-
-        if not found:
-            print("Error")
-        exit()
-
     print_menu(root_path+module_path)
 
 def print_menu(current_path):

@@ -1,13 +1,17 @@
+from rmoptions import RMOptionHandler
+
 class BaseModule(object):
 
     def __init__(self):
-        pass
+        self.option_handler = RMOptionHandler()
 
     def init_module(self):
         print("Start Module")
 
     def run_module(self):
-        print("Run")
+        if not self.option_handler.check():
+            self.show_usage()
+            return
 
     def show_usage(self):
         print("usage")

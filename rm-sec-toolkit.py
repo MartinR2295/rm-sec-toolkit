@@ -13,7 +13,7 @@ if not option_handler.check():
     exit()
 
 root_path = os.path.dirname(os.path.realpath(__file__))+"/"
-module_path = "modules/"
+module_path = "src/modules/"
 
 def main():
     if option_create.in_use:

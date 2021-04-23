@@ -44,7 +44,7 @@ def main():
             elif module_loader.is_folder_in_path_a_module(selection):
                 module = module_loader.import_module_from_folder(selection)
                 module.init_module()
-                module.run_module()
+                module.start_module()
 
 
 if __name__ == "__main__":

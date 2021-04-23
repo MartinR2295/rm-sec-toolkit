@@ -1,6 +1,7 @@
 import os
 from .rm_module_json import RMModuleJson
 import importlib
+from ..helpers.print_helper import PrintHelper
 
 '''
 Handles the actions with modules
@@ -108,7 +109,7 @@ class ModuleLoader(object):
 
         # print categories and modules
         print("\nContents")
-        self.print_seperator_line()
+        PrintHelper.print_seperator_line()
         for index, category in enumerate(categories):
             print("({}) - {} (C)".format(index + 1, category))
 
@@ -116,7 +117,7 @@ class ModuleLoader(object):
             print("({}) - {} (M)".format(index + len(categories) + 1, module))
 
         # print back option if there are steps back available
-        self.print_seperator_line()
+        PrintHelper.print_seperator_line()
         if not self.current_path_is_root_path():
             print("(b) - back")
         print("(q) - quit")
@@ -142,5 +143,3 @@ class ModuleLoader(object):
                     if inp < len(categories)
                     else modules[inp - len(categories)])()
 
-    def print_seperator_line(self, length=20):
-        print("-" * length)

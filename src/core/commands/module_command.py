@@ -20,4 +20,4 @@ class ModuleCommand(BaseCommand):
             sys.argv = option.value
             module = module_loader.import_module_from_folder(module_path)
             module.init_module()
-            module.run_module()
+            module.start_module()

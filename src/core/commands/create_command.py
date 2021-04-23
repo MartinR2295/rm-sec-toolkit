@@ -3,6 +3,7 @@ from ..module.module_loader import ModuleLoader
 import sys
 import os
 
+
 class CreateCommand(BaseCommand):
 
     def handle_option(self, option):
@@ -16,7 +17,7 @@ class CreateCommand(BaseCommand):
                 if module_json.short_name == option.value[0]:
                     exists = True
                     sys.argv = option.value
-                    module = module_loader.import_module(module_loader.get_import_path_with_module_json(module_json))
+                    module = module_loader.import_module_with_module_json(module_json)
                     module.init_module()
                     module.run_module()
 

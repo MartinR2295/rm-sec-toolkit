@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 from rmoptions import RMOptionHandler
-import os
-import json
-import importlib
 from src.core.commands.module_command import ModuleCommand
 from src.core.commands.create_command import CreateCommand
+from src.core.module.module_loader import ModuleLoader
 
+# create the option handler and set the commands
 option_handler = RMOptionHandler()
 option_create = option_handler.create_option("create", "create a resource",
                                              short_name="c", required=False,
@@ -15,14 +14,13 @@ option_module = option_handler.create_option("module", "choose a module",
                                              short_name="m", required=False,
                                              quit_after_this_option=True)
 
+# check the options
 if not option_handler.check():
     option_handler.print_error()
     option_handler.print_usage()
     exit()
 
-root_path = os.path.dirname(os.path.realpath(__file__))+"/"
-module_path = "src/modules/"
-
+# handle the commands
 if option_handler.activated_main_option:
     if option_handler.activated_main_option == option_module:
         module_command = ModuleCommand()
@@ -30,62 +28,23 @@ if option_handler.activated_main_option:
     elif option_handler.activated_main_option == option_create:
         create_command = CreateCommand()
         create_command.handle_option(option_create)
-
     exit()
 
 
+# interactive mode
 def main():
-    print_menu(root_path+module_path)
+    module_loader = ModuleLoader()
+    while True:
+        # print lists, get selections and load modules if selected
+        selection = module_loader.show_list_and_get_selection()
 
-def print_menu(current_path):
-    contents = os.listdir(current_path)
-    folders = []
-    modules = []
-    root = (current_path == root_path+module_path)
-
-    for content in contents:
-        path = current_path+content
-        if os.path.isdir(path) and not content.startswith("__"):
-            if "rm_module.json" in os.listdir(path):
-                with open(path+"/rm_module.json") as module_json:
-                    modules.append((content, json.load(module_json)))
-            else:
-                folders.append(content)
-
-    #print folders
-    for index, content in enumerate(folders+modules):
-        #for modules show the name from json
-        if index < len(folders):
-            print("({}) - {}".format(index+1, content))
-        else:
-            print("({}) - {}".format(index+1, content[1]['name']))
-
-    if not root:
-        print("(b) - back")
-
-    input_number = 0
-    while input_number < 1 or input_number > len(folders+modules):
-        inp = input("Input: ")
-        if inp.isdigit():
-            input_number = int(inp)
-            continue
-
-        if inp == "b" and not root:
-            print_menu("/".join(current_path.split("/")[:-2])+"/")
-            return
-
-
-    input_number -= 1 #to get the real list index
-    #folder handling
-    if input_number < len(folders):
-        print_menu(current_path+folders[input_number]+"/")
-    else: #module handling
-        module = modules[input_number-len(folders)]
-        import_path = current_path.replace(root_path, "").replace("/", ".")+module[0]+"."+module[1]["module"].replace(".py", "")
-        current_module = importlib.import_module(import_path).get_module()
-        current_module.init_module()
-        current_module.show_usage()
-        current_module.run_module()
+        if selection:
+            if module_loader.is_folder_in_path_a_category(selection):
+                module_loader.append_to_current_path(selection)
+            elif module_loader.is_folder_in_path_a_module(selection):
+                module = module_loader.import_module_from_folder(selection)
+                module.init_module()
+                module.run_module()
 
 
 if __name__ == "__main__":

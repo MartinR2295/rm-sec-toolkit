@@ -1,0 +1,8 @@
+{
+  "name": "Note",
+  "short-name": "note",
+  "description": "add a note",
+  "version":1.0,
+  "author": "Martin Rader",
+  "module": "module.py"
+}

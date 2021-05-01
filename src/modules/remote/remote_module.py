@@ -8,15 +8,16 @@ class RemoteModule(BaseModule):
         self.option_rhosts = self.option_handler.create_option("rhosts", "target hosts",
                                                                multiple_values=True,
                                                                default_value=[])
-        self.option_lhost = self.option_handler.create_option("lhost", "attacker host",
-                                                              default_value=None)
         self.option_rports = self.option_handler.create_option("rports", "target ports",
                                                                multiple_values=True,
                                                                default_value=[],
                                                                mapper=PortMapper)
-        self.option_lport = self.option_handler.create_option("lport", "attacker port",
-                                                              default_value=None,
-                                                              mapper=PortMapper)
+        if self.lpart_exists():
+            self.option_lhost = self.option_handler.create_option("lhost", "attacker host",
+                                                                  default_value=None)
+            self.option_lport = self.option_handler.create_option("lport", "attacker port",
+                                                                  default_value=None,
+                                                                  mapper=PortMapper)
 
     def run_module(self):
         super().run_module()

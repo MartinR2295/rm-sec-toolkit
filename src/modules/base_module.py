@@ -9,7 +9,6 @@ class BaseModule(object):
         self.option_handler = RMOptionHandler()
 
     # get the unparsed options from argv
-    # TODO bug because of the - char in for example 1-19. Output is only 1
     def get_raw_option_list(self):
         raw_options = []
         current_option = ""

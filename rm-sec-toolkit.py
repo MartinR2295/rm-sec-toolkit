@@ -2,6 +2,7 @@
 from rmoptions import RMOptionHandler
 from src.core.commands.module_command import ModuleCommand
 from src.core.commands.create_command import CreateCommand
+from src.core.commands.note_command import NoteCommand
 from src.core.module.module_loader import ModuleLoader
 
 # create the option handler and set the commands
@@ -9,6 +10,14 @@ option_handler = RMOptionHandler()
 option_create = option_handler.create_option("create", "create a resource",
                                              short_name="c", required=False,
                                              quit_after_this_option=True)
+
+option_note = option_handler.create_option("note", "add a note",
+                                             short_name="n", required=False,
+                                             quit_after_this_option=True)
+
+option_flag = option_handler.create_option("flag", "add a flag for ctf's",
+                                           short_name="f", required=False,
+                                           quit_after_this_option=True)
 
 option_module = option_handler.create_option("module", "choose a module",
                                              short_name="m", required=False,
@@ -28,6 +37,11 @@ if option_handler.activated_main_option:
     elif option_handler.activated_main_option == option_create:
         create_command = CreateCommand()
         create_command.handle_option(option_create)
+    elif option_handler.activated_main_option == option_note:
+        note_command = NoteCommand()
+        note_command.handle_option(option_note)
+    elif option_handler.activated_main_option == option_flag:
+        pass
     exit()
 
 

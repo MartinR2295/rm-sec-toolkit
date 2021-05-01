@@ -21,9 +21,6 @@ class TCPSynScan(ScannerModule):
         self.option_rhosts.value = []
         pass
 
-    def show_usage(self):
-        print("tcp scanning usage")
-
     def run_module(self):
         super().run_module()
 

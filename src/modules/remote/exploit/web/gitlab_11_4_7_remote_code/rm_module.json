@@ -1,0 +1,7 @@
+{
+  "name": "Gitlab 11.4.7 Remote Code Execution Exploit",
+  "description": "Remote Execution Exploit for Gitlab Version 11.4.7",
+  "version":1.0,
+  "author": "Martin Rader",
+  "module": "exploit.py"
+}

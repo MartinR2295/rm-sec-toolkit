@@ -29,9 +29,9 @@ setup(
         "rm-options==1.2.0",
         "scapy==2.4.5"
     ],
-    # add script which move rm-sec-toolkit.py to /usr/bin/rm-sec-toolkit
-    # also move modules to /usr/share/rm-sec-toolkit/modules
-
+    scripts=[
+        "rm-sec-toolkit"
+    ],
     entry_points={
         "console_scripts": []
     },

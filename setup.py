@@ -24,7 +24,8 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     packages=find_packages(),
-    package_data={'rmsectkf_modules': ['modules/*']},
+    data_files=[('testmod', ['modules']),
+                ('/usr/local/share/rm-sec-toolkit', ['modules'])],
     include_package_data=True,
     install_requires=[
         "rm-options==1.2.0",

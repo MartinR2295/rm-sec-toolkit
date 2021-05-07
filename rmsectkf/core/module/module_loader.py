@@ -22,11 +22,11 @@ class ModuleLoader(object):
 
     # get the path of the root path of the script itself (the folder where rm-sec-toolkit.py is located
     def get_root_path(self):
-        return "/".join(os.path.dirname(os.path.realpath(__file__)).split("/")[:-3])
+        return "/usr/local/share/rm-sec-toolkit"
 
     # get the path where the modules are located in the root folder
     def get_relative_module_path(self):
-        return "/src/modules"
+        return "/modules"
 
     # get the name of the module json file
     def get_rm_module_json_file_name(self):

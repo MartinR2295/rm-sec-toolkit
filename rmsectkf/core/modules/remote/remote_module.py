@@ -1,5 +1,5 @@
 from ..base_module import BaseModule
-from ...core.mappers.port_mapper import PortMapper
+from ...mappers.port_mapper import PortMapper
 
 
 class RemoteModule(BaseModule):
@@ -7,6 +7,7 @@ class RemoteModule(BaseModule):
         BaseModule.__init__(self)
         self.option_rhosts = self.option_handler.create_option("rhosts", "target hosts",
                                                                multiple_values=True,
+                                                               required=True,
                                                                default_value=[])
         self.option_rports = self.option_handler.create_option("rports", "target ports",
                                                                multiple_values=True,

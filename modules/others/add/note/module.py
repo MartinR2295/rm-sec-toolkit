@@ -1,5 +1,5 @@
-from ..add_module import AddModule
-from .....core.helpers.menu_helper import MenuHelper
+from rmsectkf.core.modules.others.add.add_module import AddModule
+from rmsectkf.core.helpers.menu_helper import MenuHelper
 import os
 import subprocess
 

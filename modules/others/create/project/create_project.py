@@ -1,4 +1,4 @@
-from ..create_module import CreateModule
+from rmsectkf.core.modules.others.create.create_module import CreateModule
 import os
 
 

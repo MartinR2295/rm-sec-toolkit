@@ -1,12 +1,15 @@
 from rmoptions import RMOptionHandler
 import sys
-from ..core.helpers.print_helper import PrintHelper
+from ..helpers.print_helper import PrintHelper
 
 
 class BaseModule(object):
 
     def __init__(self):
         self.option_handler = RMOptionHandler()
+        self.option_run_instantly = self.option_handler.create_option("run", "run the module instantly",
+                                                                      short_name="r",
+                                                                      needs_value=False)
 
     # get the unparsed options from argv
     def get_raw_option_list(self):
@@ -32,13 +35,22 @@ class BaseModule(object):
                          if opt.startswith(option.long_name)
                          or (option.short_name is not None and opt.startswith(option.short_name))]
         return (lambda: " ".join(option_values[0].split(" ")[1:])
-                if len(option_values) > 0
-                else None)()
+        if len(option_values) > 0
+        else None)()
 
     def init_module(self):
-        print("Start Module")
+        pass
 
     def start_module(self):
+        self.option_handler.check()
+        if self.option_run_instantly.in_use:
+            self.run_module()
+            exit()
+
+        if self.option_handler.help_option.in_use:
+            self.option_handler.print_usage()
+            exit()
+
         self.show_help()
         while True:
             inp = input("module> ")
@@ -82,7 +94,7 @@ class BaseModule(object):
             return False
 
     def show_usage(self):
-        print("usage")
+        self.option_handler.print_usage()
 
     def show_help(self):
         print("\nModule")
@@ -119,7 +131,7 @@ class BaseModule(object):
         PrintHelper.print_seperator_line()
         for option in self.option_handler.get_non_required_options():
             # skip the help option
-            if option == self.option_handler.help_option:
+            if option == self.option_handler.help_option or option == self.option_run_instantly:
                 continue
 
             # get the values if set

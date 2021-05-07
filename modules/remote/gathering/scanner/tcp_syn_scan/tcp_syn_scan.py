@@ -1,7 +1,10 @@
-from ..scanner_module import ScannerModule
+#!/usr/bin/env python3
+from rmsectkf.core.modules.remote.gathering.scanner.scanner_module import ScannerModule
 from scapy.all import *
 
-
+'''
+TCP Syn Port Scanner
+'''
 class TCPSynScan(ScannerModule):
     def __init__(self):
         ScannerModule.__init__(self)
@@ -42,3 +45,9 @@ class TCPSynScan(ScannerModule):
 
 def get_module():
     return TCPSynScan()
+
+
+# start the module if it's executed directly
+if __name__ == "__main__":
+    get_module().init_module()
+    get_module().start_module()

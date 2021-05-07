@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 from rmoptions import RMOptionHandler
-from src.core.commands.module_command import ModuleCommand
-from src.core.commands.create_command import CreateCommand
-from src.core.commands.note_command import NoteCommand
-from src.core.module.module_loader import ModuleLoader
+from rmsectkf.core.commands.module_command import ModuleCommand
+from rmsectkf.core.commands.create_command import CreateCommand
+from rmsectkf.core.commands.note_command import NoteCommand
+from rmsectkf.core.module.module_loader import ModuleLoader
 
 # create the option handler and set the commands
 option_handler = RMOptionHandler()

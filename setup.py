@@ -1,6 +1,7 @@
 import pathlib
 from setuptools import setup, find_packages
 from glob import glob
+import os
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -25,7 +26,7 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     packages=find_packages(),
-    data_files=[('testmod', glob('modules/**', recursive=True))],
+    data_files=[('testmod', [f for f in glob('modules/**/*', recursive=True) if os.path.isfile(f)])],
     include_package_data=True,
     install_requires=[
         "rm-options==1.2.0",

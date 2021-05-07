@@ -25,7 +25,7 @@ setup(
         "Programming Language :: Python :: 3.7",
     ],
     packages=find_packages(),
-    data_files=[('testmod', glob('modules/**/*', recursive=True))],
+    data_files=[('testmod', glob('modules/**', recursive=True))],
     include_package_data=True,
     install_requires=[
         "rm-options==1.2.0",

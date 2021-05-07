@@ -1,15 +1,6 @@
 from ..scanner_module import ScannerModule
 from scapy.all import *
 
-'''
-new idea:
-make a module for a man in the middle device.
-So two Ethernet inputs, and almost all traffic go through them. 
-Now we can send Ethernet and IP Packages with fake mac and ip addresses (or also random for each request).
-The responses to this request we block, and send a rst back.
-With this approach all requests come from another device, and IDS and IPS are not able to detect it.
-'''
-
 
 class TCPSynScan(ScannerModule):
     def __init__(self):

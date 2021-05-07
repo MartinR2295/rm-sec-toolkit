@@ -10,7 +10,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="rm-sec-toolkit",
-    version="0.1.0",
+    version="0.1.1",
     description="module based security toolkit framework for python",
     long_description=README,
     long_description_content_type="text/markdown",
@@ -23,7 +23,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
     ],
-    packages=["rmsectkf"],
+    packages=["rmsectkf"]+find_packages(where="rmsectkf"),
     include_package_data=True,
     install_requires=[
         "rm-options==1.2.0",

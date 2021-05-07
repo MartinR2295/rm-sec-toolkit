@@ -23,7 +23,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.7",
     ],
-    packages=["rmsectkf"]+find_packages(where="rmsectkf"),
+    packages=find_packages(),
     include_package_data=True,
     install_requires=[
         "rm-options==1.2.0",

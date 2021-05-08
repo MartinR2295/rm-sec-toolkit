@@ -2,7 +2,9 @@
 from rmoptions import RMOptionHandler
 from rmsectkf.core.commands.module_command import ModuleCommand
 from rmsectkf.core.commands.create_command import CreateCommand
+from rmsectkf.core.commands.add_command import AddCommand
 from rmsectkf.core.commands.note_command import NoteCommand
+from rmsectkf.core.commands.flag_command import FlagCommand
 from rmsectkf.core.module.module_loader import ModuleLoader
 import os
 from pathlib import Path
@@ -21,6 +23,10 @@ if not os.path.exists("/usr/local/share/rm-sec-toolkit/modules"):
 option_handler = RMOptionHandler()
 option_create = option_handler.create_option("create", "create a resource",
                                              short_name="c", required=False,
+                                             quit_after_this_option=True)
+
+option_add = option_handler.create_option("add", "add a resource",
+                                             short_name="a", required=False,
                                              quit_after_this_option=True)
 
 option_note = option_handler.create_option("note", "add a note",
@@ -50,11 +56,15 @@ if option_handler.activated_main_option:
     elif option_handler.activated_main_option == option_create:
         create_command = CreateCommand()
         success = create_command.handle_option(option_create)
+    elif option_handler.activated_main_option == option_add:
+        add_command = AddCommand()
+        success = add_command.handle_option(option_add)
     elif option_handler.activated_main_option == option_note:
         note_command = NoteCommand()
         success = note_command.handle_option(option_note)
     elif option_handler.activated_main_option == option_flag:
-        pass
+        flag_command = FlagCommand()
+        success = flag_command.handle_option(option_flag)
     if not success:
         option_handler.print_usage()
     exit()

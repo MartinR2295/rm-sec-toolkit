@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from rmsectkf.core.modules.remote.gathering.scanner.scanner_module import ScannerModule
+from rmsectkf.core.network.port import Port
 from scapy.all import *
 
 '''
@@ -42,7 +43,7 @@ class TCPSynScan(ScannerModule):
                     # check if the response has a tcp layer and check if the flag is a (SYN, ACK) flag.
                     # in that case the port is open
                     if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
-                        print("\tport {} is open".format(port))
+                        print("\tport {} is open (possible service: {})".format(port, Port.get_service_with_number(port)))
 
 
 def get_module():

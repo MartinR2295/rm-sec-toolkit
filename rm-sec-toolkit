@@ -4,7 +4,19 @@ from rmsectkf.core.commands.module_command import ModuleCommand
 from rmsectkf.core.commands.create_command import CreateCommand
 from rmsectkf.core.commands.note_command import NoteCommand
 from rmsectkf.core.module.module_loader import ModuleLoader
+import os
+from pathlib import Path
 
+# initialize rm-sec-toolkit
+# check if shared dir exists
+# if not create it, load the git repo to it and move the modules in it
+if not os.path.exists("/usr/local/share/rm-sec-toolkit/modules"):
+    print("load modules from github ...")
+    Path("/usr/local/share/rm-sec-toolkit").mkdir(parents=True, exist_ok=True)
+    os.chdir("/usr/local/share/rm-sec-toolkit")
+    os.system("git clone https://github.com/MartinR2295/rm-sec-toolkit.git")
+    os.system("mv rm-sec-toolkit/modules ./modules")
+    os.system("rm -rf rm-sec-toolkit")
 # create the option handler and set the commands
 option_handler = RMOptionHandler()
 option_create = option_handler.create_option("create", "create a resource",
@@ -12,8 +24,8 @@ option_create = option_handler.create_option("create", "create a resource",
                                              quit_after_this_option=True)
 
 option_note = option_handler.create_option("note", "add a note",
-                                             short_name="n", required=False,
-                                             quit_after_this_option=True)
+                                           short_name="n", required=False,
+                                           quit_after_this_option=True)
 
 option_flag = option_handler.create_option("flag", "add a flag for ctf's",
                                            short_name="f", required=False,
@@ -31,23 +43,26 @@ if not option_handler.check():
 
 # handle the commands
 if option_handler.activated_main_option:
+    success = False
     if option_handler.activated_main_option == option_module:
         module_command = ModuleCommand()
-        module_command.handle_option(option_module)
+        success = module_command.handle_option(option_module)
     elif option_handler.activated_main_option == option_create:
         create_command = CreateCommand()
-        create_command.handle_option(option_create)
+        success = create_command.handle_option(option_create)
     elif option_handler.activated_main_option == option_note:
         note_command = NoteCommand()
-        note_command.handle_option(option_note)
+        success = note_command.handle_option(option_note)
     elif option_handler.activated_main_option == option_flag:
         pass
+    if not success:
+        option_handler.print_usage()
     exit()
 
 
 # interactive mode
 def main():
-    module_loader = ModuleLoader()
+    module_loader = ModuleLoader(ModuleLoader.get_available_paths())
     while True:
         # print lists, get selections and load modules if selected
         selection = module_loader.show_list_and_get_selection()
@@ -56,7 +71,7 @@ def main():
             if module_loader.is_folder_in_path_a_category(selection):
                 module_loader.append_to_current_path(selection)
             elif module_loader.is_folder_in_path_a_module(selection):
-                module = module_loader.import_module_from_folder(selection)
+                module = module_loader.get_module_with_selection(selection).import_and_get_class()
                 module.init_module()
                 module.start_module()
 

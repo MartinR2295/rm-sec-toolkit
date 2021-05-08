@@ -6,18 +6,17 @@ import sys
 class ModuleCommand(BaseCommand):
 
     def handle_option(self, option):
-        module_loader = ModuleLoader()
+        if len(option.value) < 1:
+            return False
+        module_loader = ModuleLoader(ModuleLoader.get_available_paths())
         module_path = option.value[0]
-
-        # bring the inputted path in the correct format
-        if module_path.startswith("/"):
-            module_path = module_path[1:]
-        if module_path.endswith("/"):
-            module_path = module_path[:-1]
-
+        module = module_loader.get_rm_module_with_absolute_category_path(module_path)
         # load and run module
-        if module_loader.is_folder_in_path_a_module(module_path):
+        if module:
             sys.argv = option.value
-            module = module_loader.import_module_from_folder(module_path)
+            module = module.import_and_get_class()
             module.init_module()
             module.start_module()
+            return True
+
+        return False

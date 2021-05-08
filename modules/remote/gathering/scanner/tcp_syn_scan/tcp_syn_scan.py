@@ -5,6 +5,8 @@ from scapy.all import *
 '''
 TCP Syn Port Scanner
 '''
+
+
 class TCPSynScan(ScannerModule):
     def __init__(self):
         ScannerModule.__init__(self)

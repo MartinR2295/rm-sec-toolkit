@@ -14,7 +14,7 @@ class AddNoteModule(AddModule):
         print("notes: {}".format(notes_path))
         note_file = None
 
-        #choose the note file if more than one exists
+        # choose the note file if more than one exists
         available_notes = [f for f in os.listdir(notes_path) if f.endswith(".txt")]
         print("avail: {}".format(len(available_notes)))
         if len(available_notes) > 1:
@@ -41,10 +41,8 @@ class AddNoteModule(AddModule):
                 line = input()
                 if line == ":q":
                     break
-                lines.append(line+"\n")
+                lines.append(line + "\n")
             file.writelines(lines)
-
-
 
 
 def get_module():

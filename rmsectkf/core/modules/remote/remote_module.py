@@ -26,7 +26,6 @@ class RemoteModule(BaseModule):
         if self.option_rports.has_value():
             self.option_rports.value = self.normalize_and_sort_ports_array(self.option_rports.value)
 
-
     # normalize and sort port list
     def normalize_and_sort_ports_array(self, ports):
         port_list = []
@@ -35,25 +34,26 @@ class RemoteModule(BaseModule):
                 port_list += port
             elif type(port) is int:
                 port_list.append(port)
-        #remove duplicates and sort the list
+        # remove duplicates and sort the list
         return list(set(sorted(port_list)))
-
 
     '''
     Defines if the module needs a left part (lport, lhost)
     '''
+
     def lpart_exists(self):
         return False
 
     '''
     Defines if the module can handle multiple targets
     '''
+
     def multiple_rhosts(self):
         return False
 
     '''
     Defines if the module can handle multiple hosts
     '''
+
     def multiple_rports(self):
         return False
-

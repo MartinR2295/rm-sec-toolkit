@@ -14,12 +14,12 @@ class PortMapper(BaseMapper):
         return "from/to or p1 p2 p3"
 
     def map(self, value):
-        #parse if it's a range (from-to)
+        # parse if it's a range (from-to)
         port_range = re.search("^([0-9]+)\-([0-9]+)$", value)
 
         if port_range:
-            return [p for p in range(int(port_range.group(1)), int(port_range.group(2))+1)]
+            return [p for p in range(int(port_range.group(1)), int(port_range.group(2)) + 1)]
 
-        #parse single port number
+        # parse single port number
         if value.isdigit():
             return int(value)

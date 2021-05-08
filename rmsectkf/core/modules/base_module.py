@@ -29,7 +29,6 @@ class BaseModule(object):
             raw_options.append(current_option)
         return raw_options
 
-
     def get_raw_option_values(self, option):
         option_values = [opt for opt in self.get_raw_option_list()
                          if opt.startswith(option.long_name)
@@ -66,21 +65,21 @@ class BaseModule(object):
                 option_name = inp.split(" ")[1]
                 for opt in self.option_handler.options:
                     if opt.long_name == option_name or (opt.short_name is not None and opt.short_name == option_name):
-                        #delete in the argv array if exists
+                        # delete in the argv array if exists
                         for r_opt in self.get_raw_option_list():
-                            if r_opt.startswith(opt.long_name) or (opt.short_name is not None and r_opt.startswith(opt.short_name)):
+                            if r_opt.startswith(opt.long_name) or (
+                                    opt.short_name is not None and r_opt.startswith(opt.short_name)):
                                 for i, arg in enumerate(sys.argv):
                                     if r_opt.startswith(arg.replace("-", "")):
                                         sys.argv[i] = arg.replace("-", "")
                                         sys.argv = " ".join(sys.argv).replace(r_opt, "").split(" ")
                                         sys.argv = [arg for arg in sys.argv if arg != ""]
 
-                        #append to argv
+                        # append to argv
                         sys.argv += ["--{}".format(opt.long_name)]
                         sys.argv += inp.split(" ")[2:]
             elif inp == "h" or inp == "help":
                 self.show_help()
-
 
     def run_module(self):
         for option in self.option_handler.options:

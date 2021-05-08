@@ -1,7 +1,6 @@
-import os
-from .rm_module_json import RMModuleJson
-import importlib
+from .rm_module import RMModuleJson, RMModule
 from ..helpers.print_helper import PrintHelper
+from pathlib import Path
 
 '''
 Handles the actions with modules
@@ -10,95 +9,127 @@ Handles the actions with modules
 
 class ModuleLoader(object):
 
-    def __init__(self):
-        self.current_path = self.get_absolute_module_path()
+    @staticmethod
+    def get_available_paths():
+        paths = [Path("/usr/local/share/rm-sec-toolkit/modules"),
+                 Path("/usr/local/share/rm-sec-toolkit/modules")]
 
-    def append_to_current_path(self, add_part):
-        self.current_path += "/{}".format(add_part)
+        # search in home directory
+        home_file = Path.home().joinpath(ModuleLoader.get_home_custom_file_name())
+        if home_file.exists():
+            with open(home_file, "r") as file:
+                for path in file.readlines():
+                    p = Path(path)
+                    if p and p.exists():
+                        paths.append(p)
 
-    def navigate_back(self):
-        if not self.current_path_is_root_path():
-            self.current_path = "/".join(self.current_path.split("/")[:-1])
+        # search in project directory if available
+        # TODO
 
-    # get the path of the root path of the script itself (the folder where rm-sec-toolkit.py is located
-    def get_root_path(self):
-        return "/usr/local/share/rm-sec-toolkit"
+        return paths
 
-    # get the path where the modules are located in the root folder
-    def get_relative_module_path(self):
-        return "/modules"
+    @staticmethod
+    def get_home_custom_file_name():
+        return ".rmsectk_custom_paths"
 
-    # get the name of the module json file
-    def get_rm_module_json_file_name(self):
-        return "rm_module.json"
+    def __init__(self, paths):
+        self.modules = []
+        self.current_path = Path("")
+        self.modules_tree = {}
+        self.current_tree = self.modules_tree
+        for path in paths:
+            self.modules += self.load_modules_from_path(path)
 
-    # get the name of the category json file
-    def get_rm_category_json_file_name(self):
-        return "rm_category.json"
+        for module in self.modules:
+            category_path = module.get_category_path()
+            current_tree_part = self.modules_tree
+            parts = category_path.parts
+            for part in parts[:-1]:
+                if part not in current_tree_part:
+                    current_tree_part[part] = {}
+                current_tree_part = current_tree_part[part]
+            current_tree_part[parts[-1:][0]] = module
 
-    # get the absolute path to the module path
-    def get_absolute_module_path(self):
-        return self.get_root_path() + self.get_relative_module_path()
-
-    # combines the current path with another path (but don't append it)
-    def combine_with_current_path(self, add_part):
-        return self.current_path + (lambda: "" if add_part.startswith("/") else "/")() + add_part
-
-    # check if a folder in the current path is a module
-    # it simply checks if the module json exists
-    def is_folder_in_path_a_module(self, folder):
-        path = self.combine_with_current_path(folder)
-        return os.path.isdir(path) and self.get_rm_module_json_file_name() in os.listdir(path)
-
-    # check if a folder in the current path is a category
-    # it simply checks if the category json exists
-    def is_folder_in_path_a_category(self, folder):
-        path = self.combine_with_current_path(folder)
-        return os.path.isdir(path) and self.get_rm_category_json_file_name() in os.listdir(path)
-
-    # load the modue json file as RMModuleJson object
-    def get_module_json(self, folder):
-        if self.is_folder_in_path_a_module(folder):
-            return RMModuleJson.load_from_file(
-                self.combine_with_current_path("{}/{}".format(folder,
-                                                              self.get_rm_module_json_file_name())))
-
-    # get the python import path from the path of a module json object
-    def get_import_path_with_module_json(self, module_json: RMModuleJson):
-        return "{}.{}".format(module_json.path.replace(self.get_root_path(), "").replace("/", ".")[1:],
-                              module_json.module.replace(".py", ""))
-
-    # import a module with import path and get the module from it
-    def import_module(self, import_path):
-        return importlib.import_module(import_path).get_module()
-
-    # import module from folder
-    def import_module_from_folder(self, folder):
-        return self.import_module(self.get_import_path_with_module_json(self.get_module_json(folder)))
-
-    # import module with a module_json object
-    def import_module_with_module_json(self, module_json):
-        return self.import_module(self.get_import_path_with_module_json(module_json))
-
-    # get a list of all relevant folders (folders which are contain modules, or modules itself)
-    def get_list_of_relevant_folders(self):
-        return self.get_list_of_categories_of_current_path() + self.get_list_of_modules_of_current_path()
+    # load all modules from a path (with subdirectories)
+    def load_modules_from_path(self, path: Path):
+        modules = []
+        for module_json_path in [f for f in path.glob("**/{}"
+                                                              .format(RMModuleJson.get_rm_module_json_file_name()))]:
+            modules.append(RMModule(path, module_json_path.parent))
+        return modules
 
     # get a list of folders which are categories
     def get_list_of_categories_of_current_path(self):
-        return [category
-                for category in os.listdir(self.current_path)
-                if self.is_folder_in_path_a_category(category)]
+        categories = []
+        for key in self.current_tree.keys():
+            if self.is_folder_in_path_a_category(key):
+                categories.append(key)
+        return categories
 
     # get a list of folders which are modules
     def get_list_of_modules_of_current_path(self):
-        return [module
-                for module in os.listdir(self.current_path)
-                if self.is_folder_in_path_a_module(module)]
+        modules = []
+        for key in self.current_tree.keys():
+            if self.is_folder_in_path_a_module(key):
+                modules.append(key)
+        return modules
 
     # determine if the current path is in the root path of modules
     def current_path_is_root_path(self):
-        return self.current_path == self.get_absolute_module_path()
+        return self.current_tree == self.modules_tree
+
+    # navigte one step back if possible
+    def navigate_back(self):
+        if not self.current_path_is_root_path():
+            self.current_path = self.current_path.parent
+            self.sync_current_tree_with_current_path()
+
+    # sync the current path with the current tree
+    def sync_current_tree_with_current_path(self):
+        self.current_tree = self.modules_tree
+        for part in self.current_path.parts:
+            self.current_tree = self.current_tree[part]
+
+    # check if a folder in the current path is a module
+    def is_folder_in_path_a_module(self, folder):
+        return type(self.current_tree[folder]) is RMModule
+
+    # check if a folder in the current path is a category
+    def is_folder_in_path_a_category(self, folder):
+        return type(self.current_tree[folder]) is dict
+
+    # append an existing part to the current path
+    def append_to_current_path(self, add_part):
+        add_path = Path(add_part)
+        tmp_tree = self.current_tree
+
+        for part in add_path.parts:
+            if part in tmp_tree:
+                tmp_tree = tmp_tree[part]
+            else:
+                return False
+
+        self.current_path = self.current_path.joinpath(add_part)
+        self.current_tree = tmp_tree
+
+    # get rm_module object with the absolute category path like remote/gathering/scanner/tcp_syn_scan
+    def get_rm_module_with_absolute_category_path(self, path):
+        tmp_tree = self.modules_tree
+        for part in Path(path).parts:
+            if part in tmp_tree:
+                tmp_tree = tmp_tree[part]
+            else:
+                return None
+
+        if type(tmp_tree) is RMModule:
+            return tmp_tree
+
+        return None
+
+    # get RMModule from selection
+    def get_module_with_selection(self, selection):
+        if self.is_folder_in_path_a_module(selection):
+            return self.current_tree[selection]
 
     # show list of categories and modules, and return the selection
     # back navigations returns None
@@ -142,4 +173,3 @@ class ModuleLoader(object):
                     return (lambda: categories[inp]
                     if inp < len(categories)
                     else modules[inp - len(categories)])()
-

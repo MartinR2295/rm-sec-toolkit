@@ -2,7 +2,7 @@
   "name": "Project",
   "short-name": "project",
   "description": "Description",
-  "version":1.0,
+  "version": 1.0,
   "author": "Martin Rader",
   "module": "create_project.py"
 }

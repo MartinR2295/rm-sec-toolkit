@@ -15,7 +15,7 @@ class MenuHelper(object):
             path = path[:-1]
         contents = []
 
-        #filter the contents
+        # filter the contents
         for content in os.listdir(path):
             is_valid = True
             if prefix and not content.startswith(prefix):
@@ -26,9 +26,9 @@ class MenuHelper(object):
                 is_valid = False
             if except_suffix and content.endswith(except_suffix):
                 is_valid = False
-            if only_folders and not os.path.isdir(path+"/"+content):
+            if only_folders and not os.path.isdir(path + "/" + content):
                 is_valid = False
-            if only_files and os.path.isdir(path+"/"+content):
+            if only_files and os.path.isdir(path + "/" + content):
                 is_valid = False
 
             if is_valid:
@@ -43,7 +43,7 @@ class MenuHelper(object):
             user_input = input("Input: ")
             if not user_input.isdigit():
                 continue
-            user_input = int(user_input)-1
+            user_input = int(user_input) - 1
             if user_input < 0 or user_input >= len(contents):
                 continue
 

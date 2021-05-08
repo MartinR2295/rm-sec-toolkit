@@ -16,19 +16,18 @@ class CreateProjectModule(CreateModule):
                 print("Error: Project folder already exist!")
 
             os.mkdir(project_name)
-            os.mkdir(project_name+"/.rm_sec_proj")
-            os.mkdir(project_name+"/notes")
-            os.mkdir(project_name+"/flags")
+            os.mkdir(project_name + "/.rm_sec_proj")
+            os.mkdir(project_name + "/notes")
+            os.mkdir(project_name + "/flags")
 
-            with open(project_name+"/challenge.txt", "w+") as file:
+            with open(project_name + "/challenge.txt", "w+") as file:
                 challenge_url = input("Url of Challenge: ")
                 file.write(challenge_url)
 
-            with open(project_name+"/notes/general.txt", "w+") as file:
+            with open(project_name + "/notes/general.txt", "w+") as file:
                 file.write("General Notes:\n-------------------")
 
             print("project created")
-
 
 
 def get_module():

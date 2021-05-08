@@ -1,0 +1,8 @@
+{
+  "name": "Module",
+  "short-name": "module",
+  "description": "Create a module",
+  "version": 1.0,
+  "author": "Martin Rader",
+  "module": "module.py"
+}

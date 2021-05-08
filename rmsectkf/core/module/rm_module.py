@@ -36,6 +36,12 @@ class RMModuleJson(object):
         self.path = kwargs.get("path")
         self.short_name = kwargs.get("short-name")
 
+    def save_to_file(self, path: Path):
+        module_json_dict = self.__dict__
+        module_json_dict.pop("path")
+        with open(path.absolute(), "w") as file:
+            file.write(json.dumps(module_json_dict, indent=4))
+
     @staticmethod
     def get_rm_module_json_file_name():
         return "rm_module.json"

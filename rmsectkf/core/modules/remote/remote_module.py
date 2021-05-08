@@ -4,7 +4,7 @@ from ...mappers.port_mapper import PortMapper
 
 class RemoteModule(BaseModule):
     def __init__(self):
-        BaseModule.__init__(self)
+        super().__init__()
         self.option_rhosts = self.option_handler.create_option("rhosts", "target hosts",
                                                                multiple_values=True,
                                                                required=True,
@@ -21,10 +21,13 @@ class RemoteModule(BaseModule):
                                                                   mapper=PortMapper)
 
     def run_module(self):
-        super().run_module()
+        if not super().run_module():
+            return False
 
         if self.option_rports.has_value():
             self.option_rports.value = self.normalize_and_sort_ports_array(self.option_rports.value)
+
+        return True
 
     # normalize and sort port list
     def normalize_and_sort_ports_array(self, ports):

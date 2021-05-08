@@ -1,0 +1,8 @@
+{
+    "name": "http_file_server",
+    "description": "FileServer",
+    "version": 1.0,
+    "author": "MartinRader",
+    "module": "module.py",
+    "short_name": "http_file_server"
+}

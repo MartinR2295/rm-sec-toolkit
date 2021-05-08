@@ -43,7 +43,8 @@ class CreateProjectModule(CreateModule):
                                                                    needs_value=True)
 
     def run_module(self):
-        super().run_module()
+        if not super().run_module():
+            return False
         template_path = Path(__file__).parent.absolute().joinpath("module.template")
 
         print("create module folder ...")

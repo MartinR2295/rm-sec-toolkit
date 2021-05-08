@@ -18,6 +18,6 @@ class AddCommand(BaseCommand):
                 sys.argv = option.value
                 module = rm_module.import_and_get_class()
                 module.init_module()
-                module.run_module()
+                module.start_module()
 
         return exists

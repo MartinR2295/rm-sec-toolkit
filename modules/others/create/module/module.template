@@ -20,7 +20,8 @@ class {{module_name}}({{super_class}}):
                                                              needs_value=True)
 
     def run_module(self):
-        super().run_module()
+        if not super().run_module():
+            return False
 
         #put your code here
         custom = self.option_custom.value

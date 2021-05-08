@@ -1,5 +1,6 @@
 from .rm_module import RMModuleJson, RMModule
 from ..helpers.print_helper import PrintHelper
+from ..project.rm_project import RMProject
 from pathlib import Path
 
 '''
@@ -19,12 +20,15 @@ class ModuleLoader(object):
         if home_file.exists():
             with open(home_file, "r") as file:
                 for path in file.readlines():
+                    path = path.strip()
                     p = Path(path)
                     if p and p.exists():
                         paths.append(p)
 
         # search in project directory if available
-        # TODO
+        rm_project = RMProject.get_project_from_current_path()
+        if rm_project:
+            paths += rm_project.custom_paths
 
         return paths
 

@@ -10,10 +10,10 @@ from {{super_class_path}} import {{super_class}}
 class {{module_name}}({{super_class}}):
 
     def __init__(self):
-        super().__init__(self)
+        super().__init__()
 
     def init_module(self):
-        super.__init__()
+        super().init_module()
         self.option_custom = self.option_handler.create_option("custom", "custom option",
                                                              short_name="c",
                                                              required=True,

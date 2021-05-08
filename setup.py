@@ -12,7 +12,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="rm-sec-toolkit",
-    version="0.1.8",
+    version="0.1.9",
     description="module based security toolkit framework for python",
     long_description=README,
     long_description_content_type="text/markdown",

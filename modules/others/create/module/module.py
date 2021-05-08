@@ -5,8 +5,11 @@ from pathlib import Path
 
 class CreateProjectModule(CreateModule):
 
+    def __init__(self):
+        super().__init__()
+
     def init_module(self):
-        super.__init__()
+        super().init_module()
         self.option_name = self.option_handler.create_option("name", "module name",
                                                              short_name="n",
                                                              required=True,
@@ -41,7 +44,7 @@ class CreateProjectModule(CreateModule):
 
     def run_module(self):
         super().run_module()
-        template_path = Path(__file__).parent.absolute().joinpath("module.template.py")
+        template_path = Path(__file__).parent.absolute().joinpath("module.template")
 
         print("create module folder ...")
         path = Path(self.option_short_name.value)

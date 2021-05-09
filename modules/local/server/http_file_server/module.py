@@ -23,7 +23,7 @@ class HttpFileServerModule(RemoteModule):
         self.option_lport.required = True
 
     def run_module(self):
-        if not super().run_module():
+        if super().run_module() == False:
             return False
 
         print("start server on port {}".format(self.option_lport.value))

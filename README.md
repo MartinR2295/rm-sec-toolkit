@@ -16,14 +16,28 @@ A toolkit and a framework for python security scripts.
 - notes handling in the project
 - custom scripts location
 - ctf flag function for projects
+- easy to create custom models
 
 ## Install
 
+###pip
 ```shell
 pip install rm-sec-toolkit
 ```
 
 At the first start, the rm-sec-toolkit script load the modules from github, so the first start can take a bit longer.
+
+## Docker
+You can use rm-sec-toolkit with the provided docker image.
+Don't forget to use port mapping, if you want to use server modules.
+```shell
+docker run -t -i rame22/rm-sec-toolkit
+```
+
+### Example with a port scan
+```shell
+docker run -t -i rame22/rm-sec-toolkit -m remote/gathering/scanner/tcp_syn_scan --rhosts 192.168.0.100 --rports 1-1000 -r
+```
 
 ## Usage
 
@@ -37,11 +51,15 @@ Required Options
 
 Optional Options
 ‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾‾
+--add -a: add a resource {multiple values possible}
 --create -c: create a resource {multiple values possible}
 --flag -f: add a flag for ctf's {multiple values possible}
 --help -h: show usage
+--interactive -i: use the interactive mode (default)
 --module -m: choose a module {multiple values possible}
 --note -n: add a note {multiple values possible}
+--version -v: show the current version {multiple values possible}
+
 ```
 
 ### Examples
@@ -71,6 +89,19 @@ rm-sec-toolkit -n -r
 
 `-r` is only used to run it directly, because the add notes is also a regular module
 
+#### Add a flag for ctf's
+```shell
+rm-sec-toolkit -a flag -n user_flag -f e3b98a4da31a127d4bde6e43033f66ba274cab0eb7eb1c70ec41402bf6273dd8 -r
+```
+
+#### Server a directory in the local network
+Sometimes it's necessary for ctf's to server some scripts
+in the local network to download it on the target machine.
+That can easily done with the http_file_server module.
+```shell
+rm-sec-toolkit -m local/server/http_file_server --lport 12345 -r
+```
+
 #### Run a script directly without the rm-sec-toolkit console
 
 ```shell
@@ -79,9 +110,31 @@ python3 /usr/local/share/rm-sec-toolkit/modules/remote/gathering/scanner/tcp_syn
 
 `/usr/local/share/rm-sec-toolkit` is the default modules location
 
+## Update
+
+You can update rm-sec-toolkit with the update function in the menu.
+
+Start rm-sec-toolkit
+```shell
+rm-sec-toolkit
+
+Contents
+--------------------
+(1) - others (C)
+(2) - local (C)
+(3) - remote (C)
+--------------------
+(u) - check for new updates
+(q) - quit
+
+Please choose one element: 
+```
+
+With the `u` option you can check for updates, update the toolkit or only update the modules.
+
 ## Advanced Possibilities
 
-### custom script paths
+### Custom script paths
 
 Add paths to your custom scripts to the `~/.rmsectk_custom_paths` file.
 
@@ -89,8 +142,36 @@ Add paths to your custom scripts to the `~/.rmsectk_custom_paths` file.
 echo "~/my_custom_scripts_folder" >> ~/.rmsectk_custom_paths
 ```
 
+You also can add custom script paths per project.
+```shell
+cd yourProject
+echo "/any/path/" >> .rm_sec_proj/.rmsectk_custom_paths
+```
+
+Any project contains the `project_scripts` folder. This folder is automatically added to the `.rm_sec_proj/.rmsectk_custom_paths` file. Every module which you put in here, you will find in the rm-sec-toolkit in the root tree under `project_scripts`.
+
 ### Write your own script
 
+#### Create a module with the create module command
+You can easily create a new module with the toolkit itself.
+
+```shell
+rm-sec-toolkit -c module -a YourName -d Description -n fancy_module -sn fmodule
+```
+
+You have the following options.
+```shell
+--author -a: module's author {value needed}
+--class-name -c: name of the class {value needed} {default: CustomModule}
+--description -d: module description {value needed}
+--name -n: module name {value needed}
+--short-name -sn: module short name {value needed}
+--super-class -s: super class {value needed} {default: BaseModule}
+--super-class-path -sp: super class path {value needed} {default: rmsectkf.core.modules.base_module}
+```
+
+
+#### Create a module per hand
 Create a folder with the following contents.
 
 - __init__.py (just to mark it as package)

@@ -89,8 +89,10 @@ class BaseModule(object):
             else:
                 option.value = None
         if not self.option_handler.check():
+            self.option_handler.print_error()
             self.show_usage()
             return False
+        return True
 
     def show_usage(self):
         self.option_handler.print_usage()

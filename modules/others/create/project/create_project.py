@@ -15,7 +15,8 @@ class CreateProjectModule(CreateModule):
                                                             needs_value=True)
 
     def run_module(self):
-        super().run_module()
+        if super().run_module() == False:
+            return False
         project_name = self.option_name.value
         project_path = Path(project_name)
 

@@ -19,7 +19,8 @@ class TCPSynScan(ScannerModule):
         pass
 
     def run_module(self):
-        super().run_module()
+        if super().run_module() == False:
+            return False
 
         # ask for rports if no one is specified
         while len(self.option_rhosts.value) < 1:

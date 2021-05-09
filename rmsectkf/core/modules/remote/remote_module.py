@@ -21,10 +21,13 @@ class RemoteModule(BaseModule):
                                                                   mapper=PortMapper)
 
     def run_module(self):
-        super().run_module()
+        if super().run_module() == False:
+            return False
 
         if self.option_rports.has_value():
             self.option_rports.value = self.normalize_and_sort_ports_array(self.option_rports.value)
+
+        return True
 
     # normalize and sort port list
     def normalize_and_sort_ports_array(self, ports):

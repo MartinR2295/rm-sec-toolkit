@@ -20,7 +20,7 @@ class UpdateHelper(object):
     '''
     @staticmethod
     def get_current_version_number():
-        version_number = "{{number: 0.1.18}}"
+        version_number = "{{number: 0.2.0}}"
         return version_number.replace("{{number: ", "").replace("}}", "")
 
 

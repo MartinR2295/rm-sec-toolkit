@@ -14,7 +14,8 @@ class AddFlagModule(AddModule):
                                                              required=True)
 
     def run_module(self):
-        super().run_module()
+        if super().run_module() == False:
+            return False
         rm_project = RMProject.get_project_from_current_path()
 
         if not rm_project:

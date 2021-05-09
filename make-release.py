@@ -30,10 +30,13 @@ new_version = None
 if option_major.in_use:
     new_version = current_version_list
     new_version[0] = str(int(new_version[0])+1)
+    new_version[1] = "0"
+    new_version[2] = "0"
     new_version = ".".join(new_version)
 elif option_minor.in_use:
     new_version = current_version_list
     new_version[1] = str(int(new_version[1])+1)
+    new_version[2] = "0"
     new_version = ".".join(new_version)
 elif option_patch.in_use:
     new_version = current_version_list

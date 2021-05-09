@@ -21,11 +21,13 @@ class CreateProjectModule(CreateModule):
         self.option_description = self.option_handler.create_option("description", "module description",
                                                                     short_name="d",
                                                                     required=True,
-                                                                    needs_value=True)
+                                                                    needs_value=True,
+                                                                    multiple_word_string=True)
         self.option_author = self.option_handler.create_option("author", "module's author",
                                                                short_name="a",
                                                                required=True,
-                                                               needs_value=True)
+                                                               needs_value=True,
+                                                               multiple_word_string=True)
         self.option_super_class = self.option_handler.create_option("super-class", "super class",
                                                                     short_name="s",
                                                                     required=True,
@@ -85,5 +87,6 @@ def get_module():
 
 # start the module if it's executed directly
 if __name__ == "__main__":
-    get_module().init_module()
-    get_module().start_module()
+    module = get_module()
+    module.init_module()
+    module.start_module()

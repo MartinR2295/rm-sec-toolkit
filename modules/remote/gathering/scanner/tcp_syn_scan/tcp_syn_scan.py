@@ -13,24 +13,14 @@ class TCPSynScan(ScannerModule):
         ScannerModule.__init__(self)
 
     def init_module(self):
-        self.option_rhosts.needs_value = True
+        super().init_module()
         self.option_rhosts.required = True
-        self.option_rhosts.value = []
-        pass
+        self.option_rports.default_value = ["1-1000"]
+        self.option_rports.required = True
 
     def run_module(self):
         if super().run_module() == False:
             return False
-
-        # ask for rports if no one is specified
-        while len(self.option_rhosts.value) < 1:
-            print("Please specify the host which should be scanned!")
-            ip = input("IP-Address of target: ")
-            self.option_rhosts.value.append(ip)
-
-        # set the most common ports if no one is specified
-        if not self.option_rports.in_use or len(self.option_rports.value) < 1:
-            self.option_rports.value = [x for x in range(1, 1001)]
 
         # do the scan for each host
         for host in self.option_rhosts.value:
@@ -54,5 +44,6 @@ def get_module():
 
 # start the module if it's executed directly
 if __name__ == "__main__":
-    get_module().init_module()
-    get_module().start_module()
+    module = get_module()
+    module.init_module()
+    module.start_module()

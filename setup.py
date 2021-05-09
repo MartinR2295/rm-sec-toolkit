@@ -27,7 +27,7 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
-        "rm-options==1.2.0",
+        "rm-options==2.0.1",
         "scapy==2.4.5",
         "requests==2.25.1"
     ],

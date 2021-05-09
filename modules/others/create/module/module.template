@@ -20,7 +20,7 @@ class {{module_name}}({{super_class}}):
                                                              needs_value=True)
 
     def run_module(self):
-        if not super().run_module():
+        if super().run_module() == False:
             return False
 
         #put your code here
@@ -33,5 +33,6 @@ def get_module():
 
 # start the module if it's executed directly
 if __name__ == "__main__":
-    get_module().init_module()
-    get_module().start_module()
+    module = get_module()
+    module.init_module()
+    module.start_module()

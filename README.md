@@ -156,7 +156,7 @@ Any project contains the `project_scripts` folder. This folder is automatically 
 You can easily create a new module with the toolkit itself.
 
 ```shell
-rm-sec-toolkit -c module -a YourName -d Description -n fancy_module -sn fmodule
+rm-sec-toolkit -c module -a Your Name -d Any Description -n fancy_module -sn fmodule
 ```
 
 You have the following options.
@@ -213,7 +213,8 @@ class YourScanner(ScannerModule):
 
     # this is the part where you put your code
     def run_module(self):
-        super().run_module()
+        if super().run_module() == False:
+            return False
 
         #do some cool stuff here
         your_option_value = self.option_your_option.value
@@ -225,8 +226,9 @@ def get_module():
 
 # start the module if it's executed directly
 if __name__ == "__main__":
-    get_module().init_module()
-    get_module().start_module()
+    module = get_module()
+    module.init_module()
+    module.start_module()
 ```
 
 ## Example
@@ -236,6 +238,7 @@ TCP-Syn-Scanner
 ```python
 #!/usr/bin/env python3
 from rmsectkf.core.modules.remote.gathering.scanner.scanner_module import ScannerModule
+from rmsectkf.core.network.port import Port
 from scapy.all import *
 
 '''
@@ -248,23 +251,14 @@ class TCPSynScan(ScannerModule):
         ScannerModule.__init__(self)
 
     def init_module(self):
-        self.option_rhosts.needs_value = True
+        super().init_module()
         self.option_rhosts.required = True
-        self.option_rhosts.value = []
-        pass
+        self.option_rports.default_value = "1-1000"
+        self.option_rports.required = True
 
     def run_module(self):
-        super().run_module()
-
-        # ask for rports if no one is specified
-        while len(self.option_rhosts.value) < 1:
-            print("Please specify the host which should be scanned!")
-            ip = input("IP-Address of target: ")
-            self.option_rhosts.value.append(ip)
-
-        # set the most common ports if no one is specified
-        if not self.option_rports.in_use or len(self.option_rports.value) < 1:
-            self.option_rports.value = [x for x in range(1, 1001)]
+        if super().run_module() == False:
+            return False
 
         # do the scan for each host
         for host in self.option_rhosts.value:
@@ -278,7 +272,8 @@ class TCPSynScan(ScannerModule):
                     # check if the response has a tcp layer and check if the flag is a (SYN, ACK) flag.
                     # in that case the port is open
                     if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
-                        print("\tport {} is open".format(port))
+                        print(
+                            "\tport {} is open (possible service: {})".format(port, Port.get_service_with_number(port)))
 
 
 def get_module():
@@ -287,8 +282,10 @@ def get_module():
 
 # start the module if it's executed directly
 if __name__ == "__main__":
-    get_module().init_module()
-    get_module().start_module()
+    module = get_module()
+    module.init_module()
+    module.start_module()
+
 ```
 
 

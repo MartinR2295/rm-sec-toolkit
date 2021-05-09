@@ -25,7 +25,7 @@ A toolkit and a framework for python security scripts.
 pip install rm-sec-toolkit
 ```
 
-At the first start, the rm-sec-toolkit script load the modules from github, so the first start can take a bit longer.
+At the first start, the rm-sec-toolkit script loads the modules from github, so the first start can take a bit longer.
 
 ## Docker
 You can use rm-sec-toolkit with the provided docker image.
@@ -72,7 +72,7 @@ Use TCP Scanner module and run it instantly
 rm-sec-toolkit -m remote/gathering/scanner/tcp_syn_scan --rhosts 192.168.0.100 --rports 22-100 -r
 ```
 
-`-m` use directly a specified module. Every other options behind it, will passed to the module arguments
+`-m` use directly a specified module. Every other options behind it, will passed to the module arguments<br>
 `-r` run the module instantly instead to print the module menu first
 
 #### Create a project
@@ -87,15 +87,15 @@ rm-sec-toolkit -c project
 rm-sec-toolkit -n -r
 ```
 
-`-r` is only used to run it directly, because the add notes is also a regular module
+`-r` is only used to run it directly, because the add notes option is also a regular module
 
 #### Add a flag for ctf's
 ```shell
 rm-sec-toolkit -a flag -n user_flag -f e3b98a4da31a127d4bde6e43033f66ba274cab0eb7eb1c70ec41402bf6273dd8 -r
 ```
 
-#### Server a directory in the local network
-Sometimes it's necessary for ctf's to server some scripts
+#### Serve a directory in the local network
+Sometimes it's necessary for ctf's to serve some scripts
 in the local network to download it on the target machine.
 That can easily done with the http_file_server module.
 ```shell

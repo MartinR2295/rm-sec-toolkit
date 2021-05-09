@@ -18,7 +18,7 @@ class UpdateHelper(object):
 
     @staticmethod
     def get_current_version_number():
-        return "0.1.11"
+        return "0.1.12"
 
     @staticmethod
     def get_current_modules_version_file_name():

@@ -1,5 +1,4 @@
 import requests
-import subprocess
 import os
 from .menu_helper import MenuHelper
 import rmsectkf.core.module.module_loader as module_loader
@@ -16,9 +15,14 @@ class UpdateHelper(object):
         print("Version number couldn't be fetched. Maybe there are problems with the internet connection.")
         return False
 
+    '''
+    format with {{number: x.x.x}} is choosen to easy replace from the update script
+    '''
     @staticmethod
     def get_current_version_number():
-        return "0.1.12"
+        version_number = "{{number: 0.1.13}}"
+        return version_number.replace("{{number: ", "").replace("}}", "")
+
 
     @staticmethod
     def get_current_modules_version_file_name():

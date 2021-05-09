@@ -43,7 +43,8 @@ class TCPSynScan(ScannerModule):
                     # check if the response has a tcp layer and check if the flag is a (SYN, ACK) flag.
                     # in that case the port is open
                     if response.haslayer(TCP) and response.getlayer(TCP).flags == 0x12:
-                        print("\tport {} is open (possible service: {})".format(port, Port.get_service_with_number(port)))
+                        print(
+                            "\tport {} is open (possible service: {})".format(port, Port.get_service_with_number(port)))
 
 
 def get_module():

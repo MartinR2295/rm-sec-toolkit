@@ -2,6 +2,8 @@ from .rm_module import RMModuleJson, RMModule
 from ..helpers.print_helper import PrintHelper
 from ..project.rm_project import RMProject
 from pathlib import Path
+import os
+import rmsectkf.core.helpers.update_helper as update_helper
 
 '''
 Handles the actions with modules
@@ -11,9 +13,27 @@ Handles the actions with modules
 class ModuleLoader(object):
 
     @staticmethod
+    def load_default_modules_from_github():
+        modules_path = ModuleLoader.get_default_modules_location_path()
+        version_number_path = modules_path.joinpath(update_helper.UpdateHelper.get_current_modules_version_file_name())
+        if not modules_path.exists():
+            print("load modules from github ...")
+            modules_path.parent.mkdir(parents=True, exist_ok=True)
+            bak = os.getcwd()
+            os.chdir(modules_path.parent.absolute())
+            os.system("git clone https://github.com/MartinR2295/rm-sec-toolkit.git")
+            os.system("mv rm-sec-toolkit/modules ./modules")
+            os.system("rm -rf rm-sec-toolkit")
+            version_number_path.write_text(update_helper.UpdateHelper.get_current_version_number())
+            os.chdir(bak)
+
+    @staticmethod
+    def get_default_modules_location_path():
+        return Path("/usr/local/share/rm-sec-toolkit/modules")
+
+    @staticmethod
     def get_available_paths():
-        paths = [Path("/usr/local/share/rm-sec-toolkit/modules"),
-                 Path("/usr/local/share/rm-sec-toolkit/modules")]
+        paths = [ModuleLoader.get_default_modules_location_path()]
 
         # search in home directory
         home_file = Path.home().joinpath(ModuleLoader.get_home_custom_file_name())
@@ -153,10 +173,10 @@ class ModuleLoader(object):
 
         # print back option if there are steps back available
         PrintHelper.print_seperator_line()
+        print("(u) - check for new updates")
         if not self.current_path_is_root_path():
             print("(b) - back")
         print("(q) - quit")
-
         # get selection
         selection = None
         while selection is None:
@@ -169,6 +189,9 @@ class ModuleLoader(object):
             elif inp == "q" or inp == "quit":
                 print("See you")
                 exit()
+            elif inp == "u" or inp == "update":
+                update_helper.UpdateHelper.handle_update()
+                return None
 
             # handle the selection and return it
             if inp.isdigit():

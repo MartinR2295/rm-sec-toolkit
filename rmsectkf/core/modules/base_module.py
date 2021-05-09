@@ -41,14 +41,7 @@ class BaseModule(object):
         pass
 
     def start_module(self):
-        ask_for_missing_values = self.option_handler.ask_for_missing_values
-        ask_for_required_options = self.option_handler.ask_for_required_options
-        self.option_handler.ask_for_missing_values = False
-        self.option_handler.ask_for_required_options = False
         self.option_handler.check()
-        self.option_handler.ask_for_required_options = ask_for_required_options
-        self.option_handler.ask_for_missing_values = ask_for_missing_values
-
         if self.option_run_instantly.in_use:
             self.run_module()
             exit()
@@ -98,7 +91,6 @@ class BaseModule(object):
         if not self.option_handler.check():
             self.show_usage()
             return False
-        return True
 
     def show_usage(self):
         self.option_handler.print_usage()

@@ -56,11 +56,13 @@ rm-sec-toolkit -m remote/gathering/scanner/tcp_syn_scan --rhosts 192.168.0.100 -
 `-r` run the module instantly instead to print the module menu first
 
 #### Create a project
+
 ```shell
 rm-sec-toolkit -c project
 ```
 
 #### Add something to the project notes
+
 ```shell
 rm-sec-toolkit -n -r
 ```
@@ -68,9 +70,11 @@ rm-sec-toolkit -n -r
 `-r` is only used to run it directly, because the add notes is also a regular module
 
 #### Run a script directly without the rm-sec-toolkit console
+
 ```shell
 python3 /usr/local/share/rm-sec-toolkit/modules/remote/gathering/scanner/tcp_syn_scan/tcp_syn_scan.py --rhosts 192.168.0.100 -r
 ```
+
 `/usr/local/share/rm-sec-toolkit` is the default modules location
 
 ## Advanced Possibilities
@@ -78,6 +82,7 @@ python3 /usr/local/share/rm-sec-toolkit/modules/remote/gathering/scanner/tcp_syn
 ### custom script paths
 
 Add paths to your custom scripts to the `~/.rmsectk_custom_paths` file.
+
 ```shell
 echo "~/my_custom_scripts_folder" >> ~/.rmsectk_custom_paths
 ```
@@ -91,6 +96,7 @@ Create a folder with the following contents.
 - your_module.py
 
 #### rm_module.json
+
 ```json
 {
     "name": "Your Module Name",
@@ -102,6 +108,7 @@ Create a folder with the following contents.
 ```
 
 #### your_module.py
+
 ```python
 #!/usr/bin/env python3
 from rmsectkf.core.modules.remote.gathering.scanner.scanner_module import ScannerModule
@@ -142,6 +149,7 @@ if __name__ == "__main__":
 ## Example
 
 TCP-Syn-Scanner
+
 ```python
 #!/usr/bin/env python3
 from rmsectkf.core.modules.remote.gathering.scanner.scanner_module import ScannerModule

@@ -1,7 +1,6 @@
 import pathlib
 from setuptools import setup, find_packages
-from glob import glob
-import os
+from rmsectkf.core.helpers.update_helper import UpdateHelper
 
 # The directory containing this file
 HERE = pathlib.Path(__file__).parent
@@ -12,7 +11,7 @@ README = (HERE / "README.md").read_text()
 # This call to setup() does all the work
 setup(
     name="rm-sec-toolkit",
-    version="0.1.9",
+    version=UpdateHelper.get_current_version_number,
     description="module based security toolkit framework for python",
     long_description=README,
     long_description_content_type="text/markdown",

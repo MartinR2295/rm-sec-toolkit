@@ -5,6 +5,23 @@ from .print_helper import PrintHelper
 class MenuHelper(object):
 
     @staticmethod
+    def choose_selection_from_list(list, header="Selection"):
+        while True:
+            print("\n{}".format(header))
+            PrintHelper.print_seperator_line()
+            for index, content in enumerate(list):
+                print("({}) - {}".format(index + 1, content))
+
+            user_input = input("Input: ")
+            if not user_input.isdigit():
+                continue
+            user_input = int(user_input) - 1
+            if user_input < 0 or user_input >= len(list):
+                continue
+
+            return list[user_input]
+
+    @staticmethod
     def choose_content_from_path(path, prefix=None,
                                  suffix=None,
                                  except_prefix=None,

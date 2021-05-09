@@ -12,13 +12,8 @@ from pathlib import Path
 # initialize rm-sec-toolkit
 # check if shared dir exists
 # if not create it, load the git repo to it and move the modules in it
-if not os.path.exists("/usr/local/share/rm-sec-toolkit/modules"):
-    print("load modules from github ...")
-    Path("/usr/local/share/rm-sec-toolkit").mkdir(parents=True, exist_ok=True)
-    os.chdir("/usr/local/share/rm-sec-toolkit")
-    os.system("git clone https://github.com/MartinR2295/rm-sec-toolkit.git")
-    os.system("mv rm-sec-toolkit/modules ./modules")
-    os.system("rm -rf rm-sec-toolkit")
+ModuleLoader.load_default_modules_from_github()
+
 # create the option handler and set the commands
 option_handler = RMOptionHandler()
 option_create = option_handler.create_option("create", "create a resource",
@@ -26,8 +21,8 @@ option_create = option_handler.create_option("create", "create a resource",
                                              quit_after_this_option=True)
 
 option_add = option_handler.create_option("add", "add a resource",
-                                             short_name="a", required=False,
-                                             quit_after_this_option=True)
+                                          short_name="a", required=False,
+                                          quit_after_this_option=True)
 
 option_note = option_handler.create_option("note", "add a note",
                                            short_name="n", required=False,

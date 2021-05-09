@@ -36,7 +36,6 @@ class CreateProjectModule(CreateModule):
         project_path.joinpath("challenge.txt").write_text("url: {}\n".format(self.option_url.value))
         notes_path.joinpath("general.txt").write_text("General Notes:\n------------------\n")
 
-
         print("project created")
 
 

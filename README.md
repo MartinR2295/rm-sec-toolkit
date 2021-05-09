@@ -39,6 +39,16 @@ docker run -t -i rame22/rm-sec-toolkit
 docker run -t -i rame22/rm-sec-toolkit -m remote/gathering/scanner/tcp_syn_scan --rhosts 192.168.0.100 --rports 1-1000 -r
 ```
 
+### Server example
+Expose and map the wished port.
+Than map the directory you want to the /app directory.
+```shell
+docker run -t -i --expose 12345 \
+-p 12345:12345 \
+-v "$(pwd)":/app rame22/rm-sec-toolkit \
+-m local/server/http_file_server --lport 12345 -r
+```
+
 ## Usage
 
 ```shell

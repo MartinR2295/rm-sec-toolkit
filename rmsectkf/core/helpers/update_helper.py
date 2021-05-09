@@ -12,13 +12,13 @@ class UpdateHelper(object):
         session = requests.session()
         r = session.get("https://github.com/MartinR2295/rm-sec-toolkit/releases/latest")
         if r.status_code == 200:
-            return r.request.url.split("/")[-1:][0]
+            return r.request.url.split("/")[-1:][0][1:]
         print("Version number couldn't be fetched. Maybe there are problems with the internet connection.")
         return False
 
     @staticmethod
     def get_current_version_number():
-        return "0.1.10"
+        return "0.1.11"
 
     @staticmethod
     def get_current_modules_version_file_name():

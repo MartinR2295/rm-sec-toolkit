@@ -6,6 +6,7 @@ from rmsectkf.core.commands.add_command import AddCommand
 from rmsectkf.core.commands.note_command import NoteCommand
 from rmsectkf.core.commands.flag_command import FlagCommand
 from rmsectkf.core.module.module_loader import ModuleLoader
+from rmsectkf.core.helpers.update_helper import UpdateHelper
 import os
 from pathlib import Path
 
@@ -36,6 +37,16 @@ option_module = option_handler.create_option("module", "choose a module",
                                              short_name="m", required=False,
                                              quit_after_this_option=True)
 
+option_version = option_handler.create_option("version", "show the current version",
+                                              short_name="v",
+                                              required=False,
+                                              quit_after_this_option=True)
+
+option_interactive = option_handler.create_option("interactive", "use the interactive mode (default)",
+                                                  short_name="i",
+                                                  required=False,
+                                                  needs_value=False)
+
 # check the options
 if not option_handler.check():
     option_handler.print_error()
@@ -60,6 +71,9 @@ if option_handler.activated_main_option:
     elif option_handler.activated_main_option == option_flag:
         flag_command = FlagCommand()
         success = flag_command.handle_option(option_flag)
+    elif option_handler.activated_main_option == option_version:
+        print(UpdateHelper.get_current_version_number())
+        success = True
     if not success:
         option_handler.print_usage()
     exit()

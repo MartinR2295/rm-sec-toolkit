@@ -28,7 +28,8 @@ setup(
     include_package_data=True,
     install_requires=[
         "rm-options==1.2.0",
-        "scapy==2.4.5"
+        "scapy==2.4.5",
+        "requests==2.25.1"
     ],
     scripts=[
         "rm-sec-toolkit"

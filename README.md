@@ -1,8 +1,10 @@
 # rm-sec-toolkit
 
 [![PyPI version](https://badge.fury.io/py/rm-sec-toolkit.svg)](https://badge.fury.io/py/rm-sec-toolkit)
-![build state](https://github.com/MartinR2295/rm-sec-toolkit/actions/workflows/python-app.yml/badge.svg
-)
+[![Docker Image Version (latest by date)](https://img.shields.io/docker/v/rame22/rm-sec-toolkit?label=dockerhub)](https://hub.docker.com/repository/docker/rame22/rm-sec-toolkit)
+[![Docker Pulls](https://img.shields.io/docker/pulls/rame22/rm-sec-toolkit)](https://hub.docker.com/repository/docker/rame22/rm-sec-toolkit)
+[![GitHub last commit](https://img.shields.io/github/last-commit/MartinR2295/rm-sec-toolkit)](https://github.com/MartinR2295/rm-sec-toolkit)
+
 
 A toolkit and a framework for python security scripts.
 
